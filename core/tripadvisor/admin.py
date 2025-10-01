@@ -1,6 +1,4 @@
 from django.contrib import admin
-from .models import Atracao
+from .models import Atividade, Local, Categoria, Perfil, Atracao, Avaliacao, Questao, Resposta, Viagem, Endereco
 
-# Register your models here.
-
-admin.site.register(Atracao)
+admin.site.register((Atividade, Local, Categoria, Perfil, Atracao, Avaliacao, Questao, Resposta, Viagem, Endereco))
