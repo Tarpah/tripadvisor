@@ -2,6 +2,8 @@ from django.db import models
 from .base_model import BaseModel
 from django.core.validators import MinLengthValidator
 from .categoria import Categoria
+from .viagem import Viagem
+from .endereco import Endereco
 
 class Atracao(BaseModel):
     nome = models.CharField(max_length=100,
@@ -16,9 +18,10 @@ class Atracao(BaseModel):
                                 validators=[
                                     MinLengthValidator(11, 'Telefone deve ter 11 digitos.')
                                 ])
-    categorias = models.ManyToManyField(Categoria, blank=True,)
-    avaliacoes = models.ManyToManyField('tripadvisor.Perfil', through='tripadvisor.Avaliacao')
-
+    categorias = models.ManyToManyField(Categoria, blank=True,) # conexão 0 para N
+    viagens = models.ManyToManyField(Viagem, blank=True ) # conexão 0 para N
+    avaliacoes = models.ManyToManyField('tripadvisor.Perfil', through='tripadvisor.Avaliacao') # conexão com Avalia.
+    endereco = models.ForeignKey(Endereco, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return self.nome

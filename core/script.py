@@ -1,13 +1,23 @@
+
+
+from manage import *
+import contextlib, io
+
 from django.contrib.auth import get_user_model
 from django.db import IntegrityError
+
+saida = io.StringIO()
+
+# Inicialização do django e definição das configurações
+with contextlib.redirect_stdout(saida):
+    main()
+
 from decimal import Decimal
 from datetime import date
-from tripadvisor.enumerate import Genero, Proposito, Transporte, Status, Classificacao
-from tripadvisor.models import (Avaliacao, Resposta, Questao, Endereco, Viagem, Atividade,
-    Local, Atracao, Categoria, Perfil)
+from tripadvisor.models import *
 
 
-def popular_banco():
+def popular_tabelas():
     cat_museus = Categoria.objects.create(nome='Museus', classificacao=Classificacao.GENERAL,
                                           descricao='Espaços dedicados à arte e história.'
     )
@@ -95,7 +105,8 @@ def popular_banco():
         orcamento=Decimal("5000.00"),
         proposito=Proposito.VACATION,
         transporte=Transporte.PLANE,
-        notas="Visitar Caminito, Recoleta e comer um bom bife de chorizo."
+        notas="Visitar Caminito, Recoleta e comer um bom bife de chorizo.",
+        perfil=carla
     )
 
     # Viagem 2
@@ -106,7 +117,8 @@ def popular_banco():
         pais_destino="Brasil",
         orcamento=Decimal("2500.50"),
         proposito=Proposito.BUSINESS,
-        transporte=Transporte.PLANE
+        transporte=Transporte.PLANE,
+        perfil=bruno,
     )
 
     # Viagem 3
@@ -115,7 +127,8 @@ def popular_banco():
         pais_destino="Chile/Argentina",
         orcamento=Decimal("8000.00"),
         proposito=Proposito.BACKPACKING,
-        transporte=Transporte.SEVERAL
+        transporte=Transporte.SEVERAL,
+        perfil=ana,
     )
 
 
@@ -204,7 +217,7 @@ def popular_banco():
         titulo="Ótima exposição de arte gaúcha!",
         texto="Adorei a visita ao MARGS. A coleção permanente é fantástica e a arquitetura do prédio é um espetáculo à parte. Recomendo muito a visita a todos.",
         nota=9,
-        data_vista=date(2025, 8, 15),
+        data_visita=date(2025, 8, 15),
         likes=42
     )
 
@@ -215,7 +228,7 @@ def popular_banco():
         titulo="Passeio relaxante no domingo de manhã",
         texto="O parque é o coração de Porto Alegre. Perfeito para caminhar, tomar um chimarrão e aproveitar o sol. O brique de domingo é uma atração imperdível para turistas.",
         nota=10,
-        data_vista=date(2025, 9, 21),
+        data_visita=date(2025, 9, 21),
         likes=88
     )
 
@@ -226,12 +239,11 @@ def popular_banco():
         titulo="Arquitetura impressionante à beira do Guaíba",
         texto="Fui principalmente pela arquitetura do Álvaro Siza e não me decepcionei. O prédio por si só já é uma obra de arte. As exposições também são muito interessantes.",
         nota=10,
-        data_vista=date(2025, 7, 5),
+        data_visita=date(2025, 7, 5),
         likes=112
     )
 
     print("\n --- Registros Criados! ---")
-
 
 def cria_super_usuario():
     User = get_user_model()
@@ -259,3 +271,60 @@ def excluir_registros():
     User.objects.filter(is_superuser=False).delete()
 
     print("Registros Deletados.")
+
+def __main__():
+    flag = True
+    while flag:
+        print("\n== MENU ===")
+        print("1. Gerar dados")
+        print("2. Criar superusuário")
+        print("3. Atualizar")
+        print("4. Deletar registros")
+        print("5. Consultar 1 único registro")
+        print("6. Consultar diferentes registros")
+        print("0. Sair")
+
+        opcao = input("Escolha uma opção: ")
+
+        match opcao:
+            case '1':
+                popular_tabelas()
+            case '2':
+                cria_super_usuario()
+            case '3':
+                print('opcao_3')
+            case '4':
+                flag_registro = True
+                while flag_registro:
+                    print("1. Por Registro")
+                    print("2. Todos os Registros")
+                    print('0. Voltar ao menu principal')
+
+                    opcao_registro = input("Escolha uma opção:")
+
+                    match opcao_registro:
+                        case '1':
+                            print('opcao_1')
+                        case '2':
+                            excluir_registros()
+                        case '0':
+                            flag_registro = False
+                        case _:
+                            'Opção inválida'
+
+
+
+            case '5':
+                print('opcao_5')
+            case '6':
+                print('opcao_6')
+            case '0':
+                flag = False
+            case _:
+                print('Opção inválida')
+
+    print("Fim do script.")
+
+
+if __name__ == "__main__":
+    __main__()
