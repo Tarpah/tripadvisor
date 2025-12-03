@@ -3,6 +3,8 @@ from .base_model import BaseModel
 from django.core.validators import MinLengthValidator
 from tripadvisor.enumerate import Genero
 from tripadvisor.validators import verifica_maior_idade
+from ..managers import PerfilManager
+
 
 class Perfil(BaseModel):
     email = models.CharField(validators=[MinLengthValidator(10)], max_length=100)
@@ -18,6 +20,7 @@ class Perfil(BaseModel):
     premium = models.BooleanField(default=False)
     membro_desde = models.DateField(auto_now_add=True) # é automático? perguntar ao professor.
 
+    objects = PerfilManager()
 
     def __str__(self):
-        return self.nome
+        return f'{self.nome} PK:{self.pk}'

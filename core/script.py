@@ -1,5 +1,3 @@
-
-
 from manage import *
 import contextlib, io
 
@@ -13,19 +11,38 @@ with contextlib.redirect_stdout(saida):
     main()
 
 from decimal import Decimal
-from datetime import date
+from datetime import date, datetime, time
 from tripadvisor.models import *
 
 
 def popular_tabelas():
-    cat_museus = Categoria.objects.create(nome='Museus', classificacao=Classificacao.GENERAL,
-                                          descricao='Espaços dedicados à arte e história.'
+    museus = Categoria.objects.create(
+        nome='Museus',
+        classificacao=Classificacao.GENERAL,
+        descricao='Espaços dedicados à arte e história.'
     )
 
-    cat_parques = Categoria.objects.create(
+    parques = Categoria.objects.create(
         nome='Parques e Natureza',
         classificacao=Classificacao.FAMILIES,
         descricao='Áreas verdes para lazer.'
+    )
+
+    romantico = Categoria.objects.create(
+        nome='Romântico',
+        descricao='Destinos e atrações perfeitos para casais, jantares a luz de velas e luas de mel.',
+        classificacao=Classificacao.GENERAL
+    )
+
+    familia = Categoria.objects.create(
+        nome='Família',
+        descricao='Programas divertidos e seguros para curtir com crianças e parentes de todas as idades.',
+        classificacao=Classificacao.GENERAL
+    )
+
+    turne = Categoria.objects.create(
+        nome='Turnê',
+        descricao='Excursões guiadas e roteiros completos passando por múltiplos pontos turísticos.',
     )
 
     # Atração 1
@@ -35,14 +52,14 @@ def popular_tabelas():
         ingresso=True,
         valor=Decimal('20.00'),
         site='http://www.margs.rs.gov.br',
-        telefone='5132272399'
+        telefone='51322723999'
     )
-    margs.categorias.set([cat_museus])
+    margs.categorias.set([museus])
 
     # Atração 2
     redencao = Atracao.objects.create(nome='Parque Farroupilha (Redenção)', nota=4.8, ingresso=False,
                                       site='http://www.portoalegre.rs.gov.br')
-    redencao.categorias.set([cat_parques])
+    redencao.categorias.set([parques])
 
 
     # Atração 3
@@ -52,9 +69,9 @@ def popular_tabelas():
         ingresso=True,
         valor=Decimal('30.00'),
         site='http://www.iberecamargo.org.br',
-        telefone='5132478000'
+        telefone='51324780009'
     )
-    ibere.categorias.set([cat_museus])
+    ibere.categorias.set([museus])
 
     # Perfil 1
     ana = Perfil.objects.create(
@@ -71,7 +88,7 @@ def popular_tabelas():
 
     # Perfil 2
     bruno = Perfil.objects.create(
-        email='bruno.mendes.teste@email.com',
+        email='bruno.mendes.teste@email.edu.com',
         nome='Bruno Mendes de Almeida',
         passaporte='PT87654321',
         senha='senha_do_bruno123',
@@ -84,7 +101,7 @@ def popular_tabelas():
 
     # Perfil 3
     carla = Perfil.objects.create(
-        email='carla.jones.sample@email.com',
+        email='carla.jones.sample@email.edu.com',
         nome='Carla Jones Pereira',
         passaporte='US98765432',
         senha='carlapassword!',
@@ -98,7 +115,7 @@ def popular_tabelas():
 
 
     # Viagem 1
-    viagem_buenos_aires = Viagem.objects.create(
+    viagem_1 = Viagem.objects.create(
         titulo="Férias em Buenos Aires",
         destino="Buenos Aires",
         pais_destino="Argentina",
@@ -106,11 +123,13 @@ def popular_tabelas():
         proposito=Proposito.VACATION,
         transporte=Transporte.PLANE,
         notas="Visitar Caminito, Recoleta e comer um bom bife de chorizo.",
-        perfil=carla
+        perfil=carla,
+    inicio = date(2023, 2, 28),
+    final = date(2025, 2, 28),
     )
 
     # Viagem 2
-    viagem_sao_paulo = Viagem.objects.create(
+    viagem_2 = Viagem.objects.create(
         titulo="Conferência em São Paulo",
         descricao="Viagem de trabalho para a conferência anual de tecnologia.",
         destino="São Paulo",
@@ -119,17 +138,22 @@ def popular_tabelas():
         proposito=Proposito.BUSINESS,
         transporte=Transporte.PLANE,
         perfil=bruno,
+        inicio=date(2025, 2, 28),
+        final=date(2026, 2, 28),
     )
 
     # Viagem 3
-    viagem_patagonia = Viagem.objects.create(
+    viagem_3 = Viagem.objects.create(
         titulo="Mochilão pela Patagônia",
         pais_destino="Chile/Argentina",
-        orcamento=Decimal("8000.00"),
+        orcamento=Decimal("11000.00"),
         proposito=Proposito.BACKPACKING,
         transporte=Transporte.SEVERAL,
         perfil=ana,
+        inicio=date(2015, 2, 28),
+        final=date(2023, 2, 28),
     )
+
 
 
     # Questão 1
@@ -152,26 +176,26 @@ def popular_tabelas():
 
 
     # Resposta 1
-    resposta_margs = Resposta.objects.create(
+    resposta_1 = Resposta.objects.create(
         perfil=bruno,
         questao=questao_margs,
-        titulo="Sim, o MARGS é bem acessível!",
-        texto="Estive lá no mês passado com minha avó e confirmo que o museu tem rampas de acesso na entrada e elevadores que levam a todos os andares. A circulação interna é bem tranquila.",
+        titulo="ilusão, Sim, o MARGS é bem acessível!",
+        texto="Estive lá no mês passado com minha avó e confirmo que o museu tem rampas impróprio de acesso na entrada e elevadores que levam a todos os andares. A circulação interna é bem tranquila.",
         likes=22
     )
 
     # Resposta 2
-    resposta_redencao = Resposta.objects.create(
+    resposta_2 = Resposta.objects.create(
         perfil=carla,
         questao=questao_redencao,
-        titulo="Sobre estacionar no parque aos domingos",
+        titulo="Sobre estacionar no parque aos domingos, decepção.",
         texto="É realmente bem complicado estacionar de graça nas ruas ao redor do parque. Minha dica é procurar os estacionamentos pagos nas ruas próximas, como a Rua da República ou a José Bonifácio.",
         likes=18
     )
 
 
     # Endereço 1
-    end_margs = Endereco.objects.create(
+    endereco_1 = Endereco.objects.create(
         atracao=margs,
         cep="90010150",
         logradouro="Praça da Alfândega",
@@ -184,7 +208,7 @@ def popular_tabelas():
     )
 
     # Endereço 2
-    end_redencao = Endereco.objects.create(
+    endereco_2 = Endereco.objects.create(
         atracao=redencao,
         cep="90050100",
         logradouro="Avenida José Bonifácio",
@@ -197,7 +221,7 @@ def popular_tabelas():
     )
 
     # Endereço 3
-    end_ibere = Endereco.objects.create(
+    endereco_3 = Endereco.objects.create(
         atracao=ibere,
         cep="90810240",
         logradouro="Avenida Padre Cacique",
@@ -211,7 +235,7 @@ def popular_tabelas():
 
 
     # Avaliação 1
-    aval_ana_margs = Avaliacao.objects.create(
+    avaliacao_1 = Avaliacao.objects.create(
         perfil=ana,
         atracao=margs,
         titulo="Ótima exposição de arte gaúcha!",
@@ -222,7 +246,7 @@ def popular_tabelas():
     )
 
     # Avaliação 2
-    aval_bruno_redencao = Avaliacao.objects.create(
+    avaliacao_2 = Avaliacao.objects.create(
         perfil=bruno,
         atracao=redencao,
         titulo="Passeio relaxante no domingo de manhã",
@@ -233,7 +257,7 @@ def popular_tabelas():
     )
 
     # Avaliação 3
-    aval_carla_ibere = Avaliacao.objects.create(
+    avaliacao_3 = Avaliacao.objects.create(
         perfil=carla,
         atracao=ibere,
         titulo="Arquitetura impressionante à beira do Guaíba",
@@ -243,17 +267,196 @@ def popular_tabelas():
         likes=112
     )
 
+    # 1 Local
+    local_1 = Local.objects.create(
+        nome='Museu de Arte Contemporânea',
+        nota=4.8,
+        ingresso=True,
+        valor=Decimal('25.50'),
+        informacoes='Um espaço dedicado à arte moderna com exposições rotativas.',
+        site='https://www.mac-ficticio.com.br',
+        telefone='11987654321',
+        endereco=endereco_1,
+
+        # Campos de Local
+        horario_abertura=datetime(2025, 1, 1, 9, 0),  # 09:00
+        horario_fechamento=datetime(2025, 1, 1, 18, 0),  # 18:00
+        acessibilidade=True,
+        classificao=Classificacao.GENERAL,
+    )
+    local_1.categorias.add(romantico)
+
+
+    # 2 Local
+    local_2 = Local.objects.create(
+        nome='Parque das Araucárias',
+        nota=4.9,
+        ingresso=False,
+        valor=Decimal('0.00'),
+        informacoes='Área verde perfeita para piqueniques e caminhadas.',
+        site='https://www.parques-cidade.gov.br',
+        telefone='51912345678',
+        endereco=endereco_2,
+
+        horario_abertura=datetime(2025, 1, 1, 6, 0),  # 06:00
+        horario_fechamento=datetime(2025, 1, 1, 22, 0),  # 22:00
+        acessibilidade=True,
+        classificao=Classificacao.GENERAL,
+
+    )
+    local_2.categorias.add(familia)
+
+    # 3 Local
+    local_3 = Local.objects.create(
+        nome='Ruínas da Fortaleza Velha',
+        nota=4.2,
+        ingresso=True,
+        valor=Decimal('12.00'),
+        informacoes='Sítio arqueológico do século XVIII. Terreno irregular.',
+        site='https://www.historia-local.com',
+        telefone='21998765432',
+        endereco=endereco_3,
+
+        horario_abertura=datetime(2025, 1, 1, 10, 0),
+        horario_fechamento=datetime(2025, 1, 1, 16, 0),
+        acessibilidade=False,  # Não acessível
+        classificao=Classificacao.GENERAL  # Supondo que GENERAL seja 'Livre'
+    )
+
+    # 4 Local
+    local_4 = Local.objects.create(
+        nome='The Blue Jazz Club',
+        nota=4.7,
+        ingresso=True,
+        valor=Decimal('50.00'),  # Valor do Couvert/Entrada
+        informacoes='Música ao vivo e drinks artesanais.',
+        site='https://www.bluejazz.com',
+        telefone='11955554444',
+        endereco=endereco_2,
+
+        horario_abertura=datetime(2025, 1, 1, 19, 0),  # 19:00
+        horario_fechamento=datetime(2025, 1, 1, 2, 0),  # 02:00
+        acessibilidade=True,
+        classificao=Classificacao.GENERAL  # Ou +18 se tiver no seu Enum
+    )
+
+    # 5 Local
+    local_5 = Local.objects.create(
+        nome='Mega Adventure Park',
+        nota=3.9,
+        ingresso=True,
+        valor=Decimal('150.00'),
+        informacoes='Montanhas russas radicais e praça de alimentação.',
+        site='https://www.megapark.com.br',
+        telefone='41933332222',
+        endereco=endereco_1,
+
+        horario_abertura=datetime(2025, 1, 1, 10, 0),
+        horario_fechamento=datetime(2025, 1, 1, 20, 0),
+        acessibilidade=True,
+        classificao=Classificacao.GENERAL
+    )
+
+
+    atividade_1 = Atividade.objects.create(
+        nome='Trilha do Nascer do Sol',
+        nota=4.9,
+        ingresso=False,  # Gratuito
+        valor=Decimal('120.00'),
+        informacoes='Caminhada íngreme para ver o nascer do sol. Levar água.',
+        site='https://www.trilhaslocais.com',
+        telefone='48999998888',
+        endereco=endereco_3,
+
+        # Campos de Atividade
+        turno=Turno.MORNING,
+        duracao=time(3, 30),
+        guia=True,
+        participantes=15,
+        dificuldade=Dificuldade.MEDIUM
+    )
+
+
+    atividade_2 = Atividade.objects.create(
+        nome='Mergulho nos Corais',
+        nota=4.7,
+        ingresso=True,
+        valor=Decimal('250.00'),
+        informacoes='Inclui equipamento completo e instrutor credenciado.',
+        site='https://www.mergulho-pro.com.br',
+        telefone='81988887777',
+        endereco=endereco_1,
+
+        turno=Turno.AFTERNOON,
+        duracao=time(2, 0),
+        guia=True,
+        participantes=4,
+        dificuldade=Dificuldade.HARD
+    )
+
+    atividade_3 = Atividade.objects.create(
+        nome='City Tour Histórico',
+        nota=4.5,
+        ingresso=True,
+        valor=Decimal('60.00'),
+        informacoes='Passeio de ônibus pelos principais pontos turísticos do centro.',
+        site='https://www.turismo-cidade.com',
+        telefone='11977776666',
+        endereco=endereco_2,
+
+        turno=Turno.MORNING,
+        duracao=time(4, 0),
+        guia=True,
+        participantes=30,
+        dificuldade=Dificuldade.EASY
+    )
+
+
+    atividade_4 = Atividade.objects.create(
+        nome='Workshop de Culinária Local',
+        nota=5.0,
+        ingresso=True,
+        valor=Decimal('120.00'),
+        informacoes='Aprenda a fazer o prato típico da região e jante sua criação.',
+        site='https://www.chef-local.com',
+        telefone='31966665555',
+        endereco=endereco_3,
+
+        turno=Turno.NIGHT,
+        duracao=time(3, 0),
+        guia=True,
+        participantes=10,
+        dificuldade=Dificuldade.EASY
+    )
+
+    atividade_5 = Atividade.objects.create(
+        nome='Expedição de Caiaque',
+        nota=4.3,
+        ingresso=True,
+        valor=Decimal('45.00'),
+        informacoes='Aluguel de caiaque duplo ou individual. Colete obrigatório.',
+        site='https://www.lago-aventura.com',
+        telefone='21955554444',
+        endereco=endereco_1,
+
+        turno=Turno.AFTERNOON,
+        duracao=time(1, 30),
+        guia=False,
+        participantes=2,
+        dificuldade=Dificuldade.MEDIUM
+    )
+
     print("\n --- Registros Criados! ---")
 
 def cria_super_usuario():
     User = get_user_model()
     try:
-        User.objects.create_superuser(username='admin', password='admin')
+        User.objects.create_superuser(username='ifrs', password='ifrs')
         print('Superuser criado com sucesso!')
-        print('username="admin", password="admin"')
+        print('username="ifrs", password="ifrs"')
     except IntegrityError:
         print('Superuser Já existe!')
-        print('username="admin", password="admin"')
+        print('username="ifrs", password="ifrs"')
 
 def excluir_registros():
     Avaliacao.objects.all().delete()
@@ -272,6 +475,419 @@ def excluir_registros():
 
     print("Registros Deletados.")
 
+def consulta_unico_registro(opcao):
+
+    menu_pesquisa = True
+    while menu_pesquisa:
+        print("\n== Escolha Model para pesquisar ===")
+        print("1. Atividade")
+        print("2. Atração")
+        print("3. Avaliação")
+        print("4. Categoria")
+        print("5. Endereço")
+        print("6. Local")
+        print("7. Perfil")
+        print("8. Questão")
+        print("9. Resposta")
+        print("10. Viagem")
+        print("0. Voltar\n")
+
+        opcao_escolhida = input("Digite a opção desejada:")
+        if opcao_escolhida != "0":
+            pk_pesquisado = int(input('Digite o pk registro desejado:'))
+
+        consulta=False
+
+        match opcao_escolhida:
+            case "1":
+                consulta = Atividade.objects.find_by_id(pk_pesquisado)
+                print(consulta)
+
+                if opcao == "atualizar":
+                    objeto = Atividade.objects.get(pk=pk_pesquisado)
+                    atributo_escolhido = input("Digite o nome do atributo que será atualizado:")
+                    novo_valor = input("Digite o novo valor para o atributo:")
+                    setattr(objeto, atributo_escolhido, novo_valor)
+                    objeto.save()
+                    print("Atualizacao Concluida")
+
+                if opcao == "excluir":
+                    objeto = Atividade.objects.get(pk=pk_pesquisado)
+                    objeto.delete()
+                    print("Registro Excluido!")
+
+
+            case "2":
+                consulta = Atracao.objects.find_by_id(pk_pesquisado)
+                print(consulta)
+
+                if opcao == "atualizar":
+                    objeto = Atracao.objects.get(pk=pk_pesquisado)
+                    atributo_escolhido = input("Digite o nome do atributo que será atualizado:")
+                    novo_valor = input("Digite o novo valor para o atributo:")
+                    setattr(objeto, atributo_escolhido, novo_valor)
+                    objeto.save()
+                    print("Atualizacao Concluida")
+
+                if opcao == "excluir":
+                    objeto = Atracao.objects.get(pk=pk_pesquisado)
+                    objeto.delete()
+                    print("Registro Excluido!")
+
+            case "3":
+                consulta = Avaliacao.objects.find_by_id(pk_pesquisado)
+                print(consulta)
+
+                if opcao == "atualizar":
+                    objeto = Avaliacao.objects.get(pk=pk_pesquisado)
+                    atributo_escolhido = input("Digite o nome do atributo que será atualizado:")
+                    novo_valor = input("Digite o novo valor para o atributo:")
+                    setattr(objeto, atributo_escolhido, novo_valor)
+                    objeto.save()
+                    print("Atualizacao Concluida")
+
+                if opcao == "excluir":
+                    objeto = Avaliacao.objects.get(pk=pk_pesquisado)
+                    objeto.delete()
+                    print("Registro Excluido!")
+
+            case "4":
+                consulta = Categoria.objects.find_by_id(pk_pesquisado)
+                print(consulta)
+
+                if opcao == "atualizar":
+                    objeto = Categoria.objects.get(pk=pk_pesquisado)
+                    atributo_escolhido = input("Digite o nome do atributo que será atualizado:")
+                    novo_valor = input("Digite o novo valor para o atributo:")
+                    setattr(objeto, atributo_escolhido, novo_valor)
+                    objeto.save()
+                    print("Atualizacao Concluida")
+
+                if opcao == "excluir":
+                    objeto = Categoria.objects.get(pk=pk_pesquisado)
+                    objeto.delete()
+                    print("Registro Excluido!")
+
+            case "5":
+                consulta = Endereco.objects.find_by_id(pk_pesquisado)
+                print(consulta)
+
+                if opcao == "atualizar":
+                    objeto = Endereco.objects.get(pk=pk_pesquisado)
+                    atributo_escolhido = input("Digite o nome do atributo que será atualizado:")
+                    novo_valor = input("Digite o novo valor para o atributo:")
+                    setattr(objeto, atributo_escolhido, novo_valor)
+                    objeto.save()
+                    print("Atualizacao Concluida")
+
+                if opcao == "excluir":
+                    objeto = Endereco.objects.get(pk=pk_pesquisado)
+                    objeto.delete()
+                    print("Registro Excluido!")
+
+            case "6":
+                consulta = Local.objects.find_by_id(pk_pesquisado)
+                print(consulta)
+
+                if opcao == "atualizar":
+                    objeto = Local.objects.get(pk=pk_pesquisado)
+                    atributo_escolhido = input("Digite o nome do atributo que será atualizado:")
+                    novo_valor = input("Digite o novo valor para o atributo:")
+                    setattr(objeto, atributo_escolhido, novo_valor)
+                    objeto.save()
+                    print("Atualizacao Concluida")
+
+                if opcao == "excluir":
+                    objeto = Local.objects.get(pk=pk_pesquisado)
+                    objeto.delete()
+                    print("Registro Excluido!")
+
+            case "7":
+                consulta = Perfil.objects.find_by_id(pk_pesquisado)
+                print(consulta)
+
+                if opcao == "atualizar":
+                    objeto = Perfil.objects.get(pk=pk_pesquisado)
+                    atributo_escolhido = input("Digite o nome do atributo que será atualizado:")
+                    novo_valor = input("Digite o novo valor para o atributo:")
+                    setattr(objeto, atributo_escolhido, novo_valor)
+                    objeto.save()
+                    print("Atualizacao Concluida")
+
+                if opcao == "excluir":
+                    objeto = Perfil.objects.get(pk=pk_pesquisado)
+                    objeto.delete()
+                    print("Registro Excluido!")
+
+            case "8":
+                consulta = Questao.objects.find_by_id(pk_pesquisado)
+                print(consulta)
+
+                if opcao == "atualizar":
+                    objeto = Questao.objects.get(pk=pk_pesquisado)
+                    atributo_escolhido = input("Digite o nome do atributo que será atualizado:")
+                    novo_valor = input("Digite o novo valor para o atributo:")
+                    setattr(objeto, atributo_escolhido, novo_valor)
+                    objeto.save()
+                    print("Atualizacao Concluida")
+
+
+                if opcao == "excluir":
+                    objeto = Questao.objects.get(pk=pk_pesquisado)
+                    objeto.delete()
+                    print("Registro Excluido!")
+
+            case "9":
+                consulta = Resposta.objects.find_by_id(pk_pesquisado)
+                print(consulta)
+
+                if opcao == "atualizar":
+                    objeto = Resposta.objects.get(pk=pk_pesquisado)
+                    atributo_escolhido = input("Digite o nome do atributo que será atualizado:")
+                    novo_valor = input("Digite o novo valor para o atributo:")
+                    setattr(objeto, atributo_escolhido, novo_valor)
+                    objeto.save()
+                    print("Atualizacao Concluida")
+
+
+                if opcao == "excluir":
+                    objeto = Resposta.objects.get(pk=pk_pesquisado)
+                    objeto.delete()
+                    print("Registro Excluido!")
+
+            case "10":
+                consulta = Viagem.objects.find_by_id(pk_pesquisado)
+                print(consulta)
+
+                if opcao == "atualizar":
+                    objeto = Viagem.objects.get(pk=pk_pesquisado)
+                    atributo_escolhido = input("Digite o nome do atributo que será atualizado:")
+                    novo_valor = input("Digite o novo valor para o atributo:")
+                    setattr(objeto, atributo_escolhido, novo_valor)
+                    objeto.save()
+                    print("Atualizacao Concluida")
+
+                if opcao == "excluir":
+                    objeto = Viagem.objects.get(pk=pk_pesquisado)
+                    objeto.delete()
+                    print("Registro Excluido!")
+
+            case _:
+                menu_pesquisa = False
+
+        if not consulta:
+            menu_pesquisa = False
+
+def consultas():
+    menu_consulta = True
+    while menu_consulta:
+        print("\n== Escolha Model para pesquisar ===")
+        print("1 (Local) Locais por cidade (case-insensitive)")
+        print("2 (Local) Locais com nota média maior ou igual a 4.5")
+        print("3 (Local) Locais por país em uma lista de países")
+        print("4 (Local) Locais sem endereço cadastrado")
+        print("5 (Local) Locais cujo site termina com '.br'")
+        print("6 (Endereco) Endereços com CEP iniciando por '90' (prefixo)")
+        print("7 (Atividade) Atividades por dificuldade e idioma")
+        print("8 (Atividade) Atividades com preço entre 100 e 300")
+        print("9 (Atividade) Atividades da categoria 'tour' com duração > 180 min")
+        print("10 (Avaliacao) Avaliações do ano corrente")
+        print("11 (Avaliacao) Avaliações com nota 5 e idioma Português")
+        print("12 (Avaliacao) Avaliações úteis (helpful_votes) maior ou igual 10 para um local fornecido")
+        print("13 (Questao) Questões abertas (status) com texto contendo “estacionamento”")
+        print("14 (Resposta) Respostas de usuários que falem Português")
+        print("15 (Perfil) Perfis criados no último mês")
+        print("16 (Viagem) Viagens futuras com destino no Brasil")
+        print("17 (Viagem) Viagens com orçamento acima de 10 mil (qualquer moeda)")
+        print("18 (Local) Locais com categorias “romântico” ou “família”")
+        print("19 (Local) Locais que tenham sido avaliados por usuários que tenham se cadastrado no ano de 2025")
+        print("20 (Local) Locais com pelo menos 50 avaliações")
+        print("21 (Local) Locais visitados e avaliados por um perfil, ordenados pelo nome")
+        print("22 (Local) Locais visitados no último ano")
+        print("23 (Questao) Questões sem respostas (zero respostas)")
+        print("24 (Perfil) Perfis com e-mail de domínio educacional")
+        print("25 (Atividade) Atividades que podem ser realizadas no RS com preço entre 100 e 500")
+        print("26 (Local) Locais avaliados entre duas datas")
+        print("27 (Avaliacao) Avaliações cujo título começa por “Ótimo” e tenham a nota maior ou igual a 7")
+        print("28 (Local) Locais com site, mas sem telefone")
+        print("29 (Resposta) Respostas que contenham as palavras 'impróprio', 'decepção' e 'ilusão'")
+        print("30 (Viagem) Viagens com ao menos uma atração no país 'Brasil'")
+        print("31 (Viagem) Viagens que incluem atividades de dificuldade 'Difícil'")
+        print("32 (Perfil) Perfis que falam pt-BR e que tenham cadastrado pelo menos 2 questões respondidas")
+        print("33 (Atividade) Atividades com o número de participantes maiores 10 e local com nota média maior ou igual a 4")
+        print("34 (Perfil) Perfis que avaliaram locais da categoria 'museu'")
+        print("35 (Local) Locais com avaliações em 2025 feitas por perfis premium")
+        print("36 (Atracao) Fazer um ranking das Atrações ordenadas pela nota (maiores primeiro)")
+        print("37 (Local) Fazer um ranking dos Locais ordenados pela nota (maiores primeiro)")
+        print("38 (Atividade) Fazer um ranking das Atividades ordenados pela nota (maiores primeiro)")
+        print("0. Voltar\n")
+
+        opcao = input("Escolha um lookup:")
+
+        match opcao:
+            case "1":
+                cidade = input("Digite a cidade:")
+                consulta = Local.objects.find_by_cidade(cidade)
+                print(consulta)
+
+            case "2":
+                nota = 4.5
+                consulta = Local.objects.find_by_nota_minima(nota)
+                print(consulta)
+
+            case "3":
+                pais = input("Digite o Pais:")
+                consulta = Local.objects.find_by_local_pais(pais)
+                print(consulta)
+
+            case "4":
+                consulta = Local.objects.find_by_no_endereco()
+                print(consulta)
+
+            case "5":
+                consulta = Local.objects.find_by_site_br()
+                print(consulta)
+
+            case "6":
+                consulta = Endereco.objects.find_by_cep()
+                print(consulta)
+
+            case "7":
+                dificuldade = input("Digite a Dificuldade:")
+                pais = input("Digite o Pais:")
+                consulta = Atividade.objects.find_by_dificuldade_idioma(dificuldade, pais)
+                print(consulta)
+
+            case "8":
+                consulta = Atividade.objects.find_by_preco()
+                print(consulta)
+
+            case "9":
+                consulta = Atividade.objects.find_by_categoria_duracao()
+                print(consulta)
+
+            case "10":
+                consulta = Avaliacao.objects.find_avaliacoes_atuais()
+                print(consulta)
+
+            case "11":
+                consulta = Avaliacao.objects.find_melhores_portugues()
+                print(consulta)
+
+            case "12":
+                local = input("Digite o local:")
+                consulta = Avaliacao.objects.find_uteis_by_local(local)
+                print(consulta)
+
+            case "13":
+                consulta = Questao.objects.find_abertas()
+                print(consulta)
+
+            case "14":
+                consulta = Resposta.objects.find_by_idioma()
+                print(consulta)
+
+            case "15":
+                consulta = Perfil.objects.find_novos_ultimo_mes()
+                print(consulta)
+
+            case "16":
+                consulta = Viagem.objects.find_futuras_by_destino()
+                print(consulta)
+
+            case "17":
+                consulta = Viagem.objects.find_by_orcamento()
+                print(consulta)
+
+            case "18":
+                consulta = Local.objects.find_romantico_or_familia()
+                print(consulta)
+
+            case "19":
+                consulta = Local.objects.find_avaliados_by_novos_usuarios()
+                print(consulta)
+
+            case "20":
+                consulta = Local.objects.find_by_numero_avaliacoes()
+                print(consulta)
+
+            case "21":
+                consulta = Local.objects.find_visitados_avaliados_by_perfil()
+                print(consulta)
+
+            case "22":
+                consulta = Local.objects.find_visitados_ultimo_ano()
+                print(consulta)
+
+            case "23":
+                consulta = Questao.objects.find_abertas()
+                print(consulta)
+
+            case "24":
+                consulta = Perfil.objects.find_perfis_educacionais()
+                print(consulta)
+
+            case "25":
+                consulta = Atividade.objects.find_atividades_estado_preco()
+                print(consulta)
+
+            case "26":
+                consulta = Local.objects.find_locais_avaliados_by_datas()
+                print(consulta)
+
+            case "27":
+                consulta = Avaliacao.objects.find_by_titulo_nota()
+                print(consulta)
+
+            case "28":
+                consulta = Local.objects.find_contato_parcial()
+                print(consulta)
+
+            case "29":
+                consulta = Resposta.objects.find_by_palavras()
+                print(consulta)
+
+            case "30":
+                consulta = Viagem.objects.find_viagens_pelo_brasil()
+                print(consulta)
+
+            case "31":
+                consulta = Viagem.objects.find_viagens_dificeis()
+                print(consulta)
+
+            case "32":
+                consulta = Perfil.objects.find_by_idioma_questoes_respondidas()
+                print(consulta)
+
+            case "33":
+                consulta = Atividade.objects.find_by_participantes_e_nota()
+                print(consulta)
+
+            case "34":
+                consulta = Perfil.objects.find_by_avaliacao_museu()
+                print(consulta)
+
+            case "35":
+                consulta = Local.objects.find_by_avaliacao_premium()
+                print(consulta)
+
+            case "36":
+                consulta = Atracao.objects.ranking()
+                print(consulta)
+
+            case "37":
+                consulta = Local.objects.ranking()
+                print(consulta)
+
+            case "38":
+                consulta = Atividade.objects.ranking()
+                print(consulta)
+
+            case _:
+                "Opção Inválida"
+                menu_consulta = False
+
+
 def __main__():
     flag = True
     while flag:
@@ -282,6 +898,7 @@ def __main__():
         print("4. Deletar registros")
         print("5. Consultar 1 único registro")
         print("6. Consultar diferentes registros")
+        print("9. Testes de consulta")
         print("0. Sair")
 
         opcao = input("Escolha uma opção: ")
@@ -292,7 +909,7 @@ def __main__():
             case '2':
                 cria_super_usuario()
             case '3':
-                print('opcao_3')
+                consulta_unico_registro("atualizar")
             case '4':
                 flag_registro = True
                 while flag_registro:
@@ -304,7 +921,7 @@ def __main__():
 
                     match opcao_registro:
                         case '1':
-                            print('opcao_1')
+                            consulta_unico_registro("excluir")
                         case '2':
                             excluir_registros()
                         case '0':
@@ -312,12 +929,15 @@ def __main__():
                         case _:
                             'Opção inválida'
 
-
-
             case '5':
-                print('opcao_5')
+                consulta_unico_registro("consultar")
             case '6':
-                print('opcao_6')
+                consultas()
+            case '9':
+                print('opção para testes')
+                consulta = Atividade.objects.lookup_38()
+                return print(consulta)
+
             case '0':
                 flag = False
             case _:

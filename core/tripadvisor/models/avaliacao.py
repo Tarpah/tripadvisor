@@ -1,6 +1,8 @@
 from django.db import models
 from .base_model import BaseModel
 from django.core.validators import MinLengthValidator, MaxValueValidator, MinValueValidator
+from ..managers.avaliacao_manager import AvaliacaoManager
+
 
 class Avaliacao(BaseModel):
     titulo = models.CharField(validators=[MinLengthValidator(3)], max_length=100)
@@ -14,7 +16,9 @@ class Avaliacao(BaseModel):
     perfil = models.ForeignKey('tripadvisor.Perfil', on_delete=models.RESTRICT)
 
     def __str__(self):
-        return self.titulo
+        return f'{self.titulo} PK:{self.pk}'
+
+    objects = AvaliacaoManager()
 
     class Meta:
         unique_together = ('perfil', 'atracao')

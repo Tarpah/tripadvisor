@@ -7,7 +7,7 @@ from django.utils.timezone import now
 from django.core.validators import ValidationError
 from tripadvisor.enumerate import Proposito, Transporte
 from tripadvisor.models.perfil import Perfil
-
+from ..managers import ViagemManager
 
 class Viagem(BaseModel):
     titulo = models.CharField(validators=[MinLengthValidator(2)], max_length=50)
@@ -22,8 +22,10 @@ class Viagem(BaseModel):
     transporte = models.CharField(max_length=8, choices=Transporte, default=Transporte.SEVERAL)
     perfil = models.ForeignKey(Perfil, on_delete=models.CASCADE)
 
+    objects = ViagemManager()
+
     def __str__(self):
-        return self.titulo
+        return f'{self.titulo} PK:{self.pk}'
 
     def clean(self):
         try:
