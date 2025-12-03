@@ -7,3 +7,6 @@ class Classificacao(models.TextChoices):
     SOLO = "Solo"
     BUSINESS = "Negócios"
     ADULT = "Adulto"
+
+
+

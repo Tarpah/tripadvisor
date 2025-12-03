@@ -3,6 +3,7 @@ from .base_model import BaseModel
 from django.core.validators import MinLengthValidator, MinValueValidator
 from tripadvisor.enumerate import Status
 from .perfil import Perfil
+from ..managers import QuestaoManager
 
 class Questao(BaseModel):
     titulo = models.CharField(max_length=100, validators=[MinLengthValidator(3)])
@@ -12,5 +13,9 @@ class Questao(BaseModel):
     likes = models.IntegerField(validators=[MinValueValidator(0)], default=0)
     perfil = models.ForeignKey(Perfil, on_delete=models.CASCADE)
 
+    objects = QuestaoManager()
+
+
     def __str__(self):
-        return self.titulo
+        return f'{self.titulo} PK:{self.pk}'
+

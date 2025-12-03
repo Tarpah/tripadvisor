@@ -1,7 +1,7 @@
 from django.db import models
 from .base_model import BaseModel
 from django.core.validators import MinLengthValidator, MinValueValidator
-from .atracao import Atracao
+from ..managers import EnderecoManager
 
 class Endereco(BaseModel):
     cep = models.CharField(validators=[MinLengthValidator(8)], max_length=8)
@@ -12,8 +12,8 @@ class Endereco(BaseModel):
     cidade = models.CharField(validators=[MinLengthValidator(3)], max_length=50)
     estado = models.CharField(validators=[MinLengthValidator(5)], max_length=30)
     pais = models.CharField(validators=[MinLengthValidator(3)], max_length=100)
-    atracao = models.OneToOneField(Atracao, on_delete=models.CASCADE)
 
+    objects = EnderecoManager()
 
     def __str__(self):
-        return f"{self.cidade}, {self.bairro}, {self.numero}"
+        return f"{self.cidade}, {self.bairro}, {self.numero}, PK:{self.pk}"
