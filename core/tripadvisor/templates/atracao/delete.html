@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+  {% block title %}
+    <h1> {{ atracao|capfirst }}</h1>
+  {% endblock title %}
+  {% block content %}
+      <div class="content" >
+        <div class="row">
+          <strong>Código:</strong> <p> {{ atracao.id }} </p>
+          <strong>Nome:</strong> <p> {{ atracao.name }} </p>
+            {{ atracao.name|capfirst }} </p>
+        </div>
+      </div>
+
+      <div>
+          <h3>Esta ação é irreversível deletar os dados acima?</h3>
+
+          <form id="atracao"
+            action="{% url 'tripadvisor:atracao_delete' atracao.id %}"
+            method="post">
+
+              {% csrf_token %}
+
+              <input type="hidden" id="atracao_id" name="atracao_id"
+                    value="{{ atracao.id }}">
+              <button type="submit" class="btn btn-outline-danger btn-lg"
+                      form="atracao" value="Deletar"> <i class="bi bi-trash3"> </i>
+              Sim, Deletar</button>
+
+              <a class="btn btn-outline-light btn-lg" role="button"
+
+           href="{% url 'tripadvisor:atracao_list' %}"> <i
+                class="bi bi-arrow-left"></i> Voltar </a>
+
+          </form>
+
+      </div>
+
+  {% endblock content %}

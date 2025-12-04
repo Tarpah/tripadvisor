@@ -448,15 +448,25 @@ def popular_tabelas():
 
     print("\n --- Registros Criados! ---")
 
-def cria_super_usuario():
+def cria_usuarios():
     User = get_user_model()
     try:
         User.objects.create_superuser(username='ifrs', password='ifrs')
         print('Superuser criado com sucesso!')
-        print('username="ifrs", password="ifrs"')
+        print('username="ifrs", password="ifrs"\n')
+
+        User.objects.create_user(username='user', password='restinga2025')
+        print('usuário user criado com sucesso!')
+        print('username="user", password="restinga2025"\n')
+
+        User.objects.create_user(username='comum', password='restinga2025')
+        print('usuário comum criado com sucesso!')
+        print('username="comum", password="restinga2025"\n')
+
     except IntegrityError:
         print('Superuser Já existe!')
         print('username="ifrs", password="ifrs"')
+
 
 def excluir_registros():
     Avaliacao.objects.all().delete()
@@ -893,7 +903,7 @@ def __main__():
     while flag:
         print("\n== MENU ===")
         print("1. Gerar dados")
-        print("2. Criar superusuário")
+        print("2. Criar usuários")
         print("3. Atualizar")
         print("4. Deletar registros")
         print("5. Consultar 1 único registro")
@@ -907,7 +917,7 @@ def __main__():
             case '1':
                 popular_tabelas()
             case '2':
-                cria_super_usuario()
+                cria_usuarios()
             case '3':
                 consulta_unico_registro("atualizar")
             case '4':

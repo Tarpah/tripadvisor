@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+  {% block title %}
+    <h1> {{ atracao|capfirst }}</h1>
+  {% endblock title %}
+  {% block content %}
+      <div class="content" >
+        <div class="row">
+          <strong>Código:</strong> <p> {{ atracao.id }} </p>
+          <strong>Nome:</strong> <p> {{ atracao.name }} </p>
+            {{ atracao.name|capfirst }}</p>
+        </div>
+      </div>
+
+      <div>
+        <a class="btn btn-outline-light btn-lg" role="button"
+           href="{% url 'tripadvisor:atracao_list'%}"> <i
+                class="bi bi-arrow-left"></i> Voltar </a>
+      </div>
+  {% endblock content %}

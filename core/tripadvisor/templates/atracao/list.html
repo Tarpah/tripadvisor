@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {% if lista_atracoes_atracoes %}
+        <h1>Gerenciamento de Atrações do ADMIN</h1>
+    {% else %}
+        <h1>Nenhuma Atração cadastrado!</h1>
+    {% endif %}
+{% endblock title %}
+
+{% block content %}
+
+        <a class="btn btn-outline-success btn-lg" role="button"
+           data-bs-toggle="tooltip" data-bs-placement="top"
+           title="Criar Atracao pela Classe"
+           href=" {% url 'tripadvisor:atracao_create' %} ">
+            <i class="bi bi-plus-square"></i> Criar Atração </a>
+
+        {% if lista_atracoes %}
+            <table class="table table-hover">
+                <thead>
+                    <th>PK</th>
+                    <th>Nome</th>
+                    <th>Nota</th>
+                    <th>Ingresso</th>
+                    <th>Valor</th>
+                    <th>Informações</th>
+                    <th>Site</th>
+                    <th>Telefone</th>
+                    <th>Funções com Classe</th>
+                </thead>
+
+                <tbody>
+                {% for atracao in lista_atracoes %}
+                    <tr>
+                        <td>{{ atracao.pk }}</td>
+                        <td>{{ atracao.nome }}</td>
+                        <td>{{ atracao.nota }}</td>
+                        <td>{{ atracao.ingresso }}</td>
+                        <td>{{ atracao.valor }}</td>
+                        <td>{{ atracao.informacoes }}</td>
+                        <td>{{ atracao.site }}</td>
+                        <td>{{ atracao.telefone }}</td>
+                        <td>
+                            <div>
+                                <a class="btn btn-info" role="button"
+                                   data-bs-toggle="tooltip" data-bs-placement="top"
+                                   title="Detalhar com Classe"
+                                   href="{% url 'tripadvisor:atracao_detail' atracao.pk %}">
+                                    <i class="bi bi-info-circle-fill"></i> Detalhar </a>
+                            </div>
+
+                            <div>
+                                <a class="btn btn-danger" role="button"
+                                   data-bs-toggle="tooltip" data-bs-placement="top"
+                                   title="Excluir Atracao com Classe"
+                                   href="{% url 'tripadvisor:atracao_delete' atracao.id %}">
+                                    <i class="bi bi-fire"></i> Excluir </a>
+                            </div>
+
+                            <div>
+                                <a class="btn btn-primary" role="button"
+                                   data-bs-toggle="tooltip" data-bs-placement="top"
+                                   title="Atualizar Atração com Classe"
+                                   href="{% url 'tripadvisor:atracao_update' atracao.id %}">
+                                    <i class="bi bi-arrow-clockwise"></i> Update Atração </a>
+                            </div>
+
+
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+{% endblock content %}

@@ -12,8 +12,8 @@ class Avaliacao(BaseModel):
     data_avaliacao = models.DateField(auto_now_add=True) # é automático? perguntar professor
     likes = models.IntegerField(validators=[MinValueValidator(0)], default=0)
 
-    atracao = models.ForeignKey('tripadvisor.Atracao', on_delete=models.RESTRICT)
-    perfil = models.ForeignKey('tripadvisor.Perfil', on_delete=models.RESTRICT)
+    atracao = models.ForeignKey('tripadvisor.Atracao', on_delete=models.CASCADE)
+    perfil = models.ForeignKey('tripadvisor.Perfil', on_delete=models.CASCADE)
 
     def __str__(self):
         return f'{self.titulo} PK:{self.pk}'

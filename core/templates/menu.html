@@ -1,0 +1,68 @@
+{% extends "minimal.html" %}
+
+{% block menu %}
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/">Home</a>
+        </li>
+        <li class="nav-item dropdown">
+          <ul class="dropdown-menu">
+            <li class="dropdown-item"> <h4><b>Function-based view</b></h4>  </li>
+            <li><a class="dropdown-item" href="#">Busca com Nome</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li class="dropdown-item"> <h4><b>Class-based view</b></h4>  </li>
+            <li><a class="dropdown-item" href="#">Saudação</a></li>
+            <li><a class="dropdown-item" href="#">Busca com Nome - HTTP</a></li>
+            <li><a class="dropdown-item" href="#">Busca com Nome - JSON</a></li>
+          </ul>
+
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Atrações
+          </a>
+
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{% url 'tripadvisor:atracao_list' %}">Lista Atrações</a></li>
+          </ul>
+        </li>
+
+
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Enviar Email</a>
+          </li>
+
+
+
+      </ul>
+      <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+
+
+        <a class="btn btn-outline-primary btn"
+          role="button" href="{% url 'login' %}"> <i
+                  class="bi bi-box-arrow-in-up"> </i> </a>
+
+        <a class="btn btn-outline-primary btn"
+          role="button" href="#"> <i
+                  class="bi bi-box-arrow-in-right"> </i> </a>
+
+
+
+
+    </div>
+
+
+  </div>
+</nav>
+{% endblock menu %}
